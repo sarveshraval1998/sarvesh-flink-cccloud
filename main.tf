@@ -66,8 +66,7 @@ resource "confluent_api_key" "my_kafka_api_key" {
   }
 
   depends_on = [
-    data.confluent_kafka_cluster.existing_cluster,
-    confluent_role_binding.my_org_admin_role_binding
+    data.confluent_kafka_cluster.existing_cluster
   ]
 }
 
