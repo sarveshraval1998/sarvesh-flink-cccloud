@@ -22,6 +22,8 @@ locals {
 provider "confluent" {
   schema_registry_api_key    = var.confluent_schema_registry_api_key
   schema_registry_api_secret = var.confluent_schema_registry_api_secret
+  schema_registry_rest_endpoint    = "https://pkc-p11xm.us-east-1.aws.confluent.cloud"
+  schema_registry_id  = "lkc-6o2q52"
 }
 
 data "confluent_environment" "existing_env" {
