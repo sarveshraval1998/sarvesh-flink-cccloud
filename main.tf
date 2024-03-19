@@ -46,28 +46,8 @@ data "confluent_organization" "my_org" {}
 
 # Create a new Kafka API key.
 # This will be needed to create a Kakfa topic and to communicate with the Kafka cluster in general.
-resource "confluent_api_key" "my_kafka_api_key" {
-  display_name = "my_kafka_api_key"
-
-  owner {
-    id          = data.confluent_service_account.existing_service_account.id
-    api_version = data.confluent_service_account.existing_service_account.api_version
-    kind        = data.confluent_service_account.existing_service_account.kind
-  }
-
-  managed_resource {
-    id          = data.confluent_kafka_cluster.existing_cluster.id
-    api_version = data.confluent_kafka_cluster.existing_cluster.api_version
-    kind        = data.confluent_kafka_cluster.existing_cluster.kind
-
-    environment {
-      id = data.confluent_environment.existing_env.id
-    }
-  }
-
-  depends_on = [
-    data.confluent_kafka_cluster.existing_cluster
-  ]
+data "confluent_api_key" "existing_api_key" {
+  display_name = "testcicdapikey"
 }
 
 # Create a new Kafka topic. We will eventually ingest data from a Datagen connector into this topic.
@@ -80,12 +60,12 @@ resource "confluent_kafka_topic" "source_topic" {
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = confluent_api_key.my_kafka_api_key.id
-    secret = confluent_api_key.my_kafka_api_key.secret
+    key    = data.confluent_api_key.existing_api_key.id
+    secret = data.confluent_api_key.existing_api_key.secret
   }
 
   depends_on = [
-    confluent_api_key.my_kafka_api_key
+    data.confluent_api_key.existing_api_key
   ]
 }
 
