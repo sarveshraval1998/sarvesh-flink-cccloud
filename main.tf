@@ -139,7 +139,7 @@ resource "confluent_connector" "my_connector" {
     "connector.class"          = "DatagenSource"
     "name"                     = "my_connector"
     "kafka.auth.mode"          = "SERVICE_ACCOUNT"
-    "kafka.service.account.id" = confluent_service_account.existing_service_account.id
+    "kafka.service.account.id" = data.confluent_service_account.existing_service_account.id
     "kafka.topic"              = confluent_kafka_topic.source_topic.topic_name
     "output.data.format"       = "AVRO"
     "quickstart"               = "ORDERS"
