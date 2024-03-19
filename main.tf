@@ -1,6 +1,6 @@
 terraform {
   cloud {
-    organization = "flink_ccccloud"
+    organization = "flink_cccloud"
 
     workspaces {
       name = "cicd_flink_ccloud"
