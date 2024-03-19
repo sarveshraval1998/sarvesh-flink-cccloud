@@ -64,7 +64,7 @@ resource "confluent_kafka_cluster" "my_kafka_cluster" {
   basic {}
 
   environment {
-    id = data.confluent_kafka_cluster.existing_cluster.environment.id
+    id = data.confluent_kafka_cluster.existing_cluster.environment[0].id
   }
 
 }
