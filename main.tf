@@ -57,8 +57,9 @@ data "confluent_kafka_cluster" "existing_cluster" {
 }
 
 # Create a new Service Account. This will used during Kafka API key creation and Flink SQL statement submission.
-resource "confluent_service_account" "my_service_account" {
-  display_name = "my_service_account"
+data "confluent_service_account" "existing_service_account" {
+  display_name = "sa-153094-dev"
+  # You may need to provide additional filters to uniquely identify the existing service account
 }
 
 data "confluent_organization" "my_org" {}
@@ -72,7 +73,7 @@ resource "confluent_role_binding" "my_org_admin_role_binding" {
   crn_pattern = data.confluent_organization.my_org.resource_name
 
   depends_on = [
-    confluent_service_account.my_service_account
+    data.confluent_service_account.my_service_account
   ]
 }
 
