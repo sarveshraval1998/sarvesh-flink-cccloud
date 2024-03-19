@@ -106,7 +106,7 @@ resource "confluent_api_key" "my_kafka_api_key" {
     kind        = confluent_kafka_cluster.my_kafka_cluster.kind
 
     environment {
-      id = confluent_environment.existing_env.id
+      id = data.confluent_environment.existing_env.id
     }
   }
 
@@ -138,7 +138,7 @@ resource "confluent_kafka_topic" "source_topic" {
 # Create a Datagen connector and ingest mock data into the source_topic created above.
 resource "confluent_connector" "my_connector" {
   environment {
-    id = confluent_environment.existing_env.id
+    id = data.confluent_environment.existing_env.id
   }
 
   kafka_cluster {
