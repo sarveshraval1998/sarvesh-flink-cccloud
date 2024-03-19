@@ -56,19 +56,6 @@ data "confluent_kafka_cluster" "existing_cluster" {
   }
 }
 
-resource "confluent_kafka_cluster" "my_kafka_cluster" {
-  display_name = data.confluent_kafka_cluster.existing_cluster.display_name
-  availability = data.confluent_kafka_cluster.existing_cluster.availability
-  cloud        = local.cloud
-  region       = local.region
-  basic {}
-
-  environment {
-    id = data.confluent_kafka_cluster.existing_cluster.environment[0].id
-  }
-
-}
-
 # Create a new Service Account. This will used during Kafka API key creation and Flink SQL statement submission.
 resource "confluent_service_account" "my_service_account" {
   display_name = "my_service_account"
@@ -101,9 +88,9 @@ resource "confluent_api_key" "my_kafka_api_key" {
   }
 
   managed_resource {
-    id          = confluent_kafka_cluster.my_kafka_cluster.id
-    api_version = confluent_kafka_cluster.my_kafka_cluster.api_version
-    kind        = confluent_kafka_cluster.my_kafka_cluster.kind
+    id          = confluent_kafka_cluster.existing_cluster.id
+    api_version = confluent_kafka_cluster.existing_cluster.api_version
+    kind        = confluent_kafka_cluster.existing_cluster.kind
 
     environment {
       id = data.confluent_environment.existing_env.id
@@ -111,7 +98,7 @@ resource "confluent_api_key" "my_kafka_api_key" {
   }
 
   depends_on = [
-    confluent_kafka_cluster.my_kafka_cluster,
+    confluent_kafka_cluster.existing_cluster,
     confluent_role_binding.my_org_admin_role_binding
   ]
 }
@@ -119,11 +106,11 @@ resource "confluent_api_key" "my_kafka_api_key" {
 # Create a new Kafka topic. We will eventually ingest data from a Datagen connector into this topic.
 resource "confluent_kafka_topic" "source_topic" {
   kafka_cluster {
-    id = confluent_kafka_cluster.my_kafka_cluster.id
+    id = confluent_kafka_cluster.existing_cluster.id
   }
 
   topic_name    = "source_topic"
-  rest_endpoint = confluent_kafka_cluster.my_kafka_cluster.rest_endpoint
+  rest_endpoint = confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
     key    = confluent_api_key.my_kafka_api_key.id
@@ -142,7 +129,7 @@ resource "confluent_connector" "my_connector" {
   }
 
   kafka_cluster {
-    id = confluent_kafka_cluster.my_kafka_cluster.id
+    id = confluent_kafka_cluster.existing_cluster.id
   }
 
   config_sensitive = {}
