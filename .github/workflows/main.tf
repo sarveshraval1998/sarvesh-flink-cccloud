@@ -28,6 +28,26 @@ data "confluent_environment" "existing_env" {
   display_name = "Dev"  
 }
 
+data "confluent_schema_registry_region" "my_sr_region" {
+  cloud   = local.cloud
+  region  = local.region
+  package = "ESSENTIALS"
+}
+
+resource "confluent_schema_registry_cluster" "my_sr_cluster" {
+  package = data.confluent_schema_registry_region.my_sr_region.package
+
+  environment {
+    id = data.confluent_environment.existing_env.id  # Use the ID of the existing environment
+  }
+
+  region {
+    # See https://docs.confluent.io/cloud/current/stream-governance/packages.html#stream-governance-regions
+    id = data.confluent_schema_registry_region.my_sr_region.id
+  }
+
+}
+
 data "confluent_kafka_cluster" "existing_cluster" {
   display_name = "DF_AWS_DEV" 
 
