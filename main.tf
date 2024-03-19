@@ -68,7 +68,7 @@ data "confluent_organization" "my_org" {}
 # This will give the Service Account the necessary permissions to create topics, Flink statements, etc.
 # In production, you may want to assign a less privileged role.
 resource "confluent_role_binding" "my_org_admin_role_binding" {
-  principal   = "User:${confluent_service_account.existing_service_account.id}"
+  principal   = "User:${data.confluent_service_account.existing_service_account.id}"
   role_name   = "OrganizationAdmin"
   crn_pattern = data.confluent_organization.my_org.resource_name
 
@@ -83,9 +83,9 @@ resource "confluent_api_key" "my_kafka_api_key" {
   display_name = "my_kafka_api_key"
 
   owner {
-    id          = confluent_service_account.existing_service_account.id
-    api_version = confluent_service_account.existing_service_account.api_version
-    kind        = confluent_service_account.existing_service_account.kind
+    id          = data.confluent_service_account.existing_service_account.id
+    api_version = data.confluent_service_account.existing_service_account.api_version
+    kind        = data.confluent_service_account.existing_service_account.kind
   }
 
   managed_resource {
