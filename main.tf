@@ -73,7 +73,7 @@ resource "confluent_role_binding" "my_org_admin_role_binding" {
   crn_pattern = data.confluent_organization.my_org.resource_name
 
   depends_on = [
-    data.confluent_service_account.my_service_account
+    data.confluent_service_account.existing_service_account
   ]
 }
 
