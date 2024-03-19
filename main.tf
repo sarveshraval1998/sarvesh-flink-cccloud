@@ -85,7 +85,7 @@ resource "confluent_kafka_topic" "source_topic" {
   }
 
   depends_on = [
-    confluent_api_key.existing_api_key
+    confluent_api_key.my_kafka_api_key
   ]
 }
 
