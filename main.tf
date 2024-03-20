@@ -51,7 +51,7 @@ resource "confluent_kafka_topic" "source_topic" {
     id = data.confluent_kafka_cluster.existing_cluster.id
   }
 
-  topic_name    = "source_topic"
+  topic_name    = "source_newtopic"
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
@@ -94,7 +94,7 @@ resource "confluent_kafka_topic" "sink_topic" {
     id = data.confluent_kafka_cluster.existing_cluster.id
   }
 
-  topic_name    = "sink_topic"
+  topic_name    = "sink_newtopic"
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
