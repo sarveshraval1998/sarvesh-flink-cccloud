@@ -182,7 +182,7 @@ resource "confluent_flink_statement" "my_flink_statement" {
     "sql.current-database" = data.confluent_kafka_cluster.existing_cluster.display_name
   }
 
-  rest_endpoint = "https://flink.${my_flink_region.region}.${my_flink_region.cloud}.confluent.cloud/sql/v1beta1/organizations/1111aaaa-11aa-11aa-11aa-111111aaaaaa/environments/${data.confluent_environment.existing_env.id}"
+  rest_endpoint = "https://flink.${data.confluent_flink_region.my_flink_region.region}.${ data.confluent_flink_region.my_flink_region.cloud}.confluent.cloud/sql/v1beta1/organizations/1111aaaa-11aa-11aa-11aa-111111aaaaaa/environments/${data.confluent_environment.existing_env.id}"
  
   credentials {
     key    = "ZO7ZE6JNKVAQWBGL"
