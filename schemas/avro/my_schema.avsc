@@ -1,0 +1,15 @@
+{
+  "fields": [
+    {
+      "name": "orderid",
+      "type": "int"
+    },
+    {
+      "name": "orderunits",
+      "type": "double"
+    }
+  ],
+  "name": "orders",
+  "namespace": "io.confluent.examples.flink",
+  "type": "record"
+}
