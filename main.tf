@@ -155,37 +155,3 @@ resource "confluent_api_key" "my_flink_api_key" {
     }
   }
 }
-
-# Deploy a Flink SQL statement to Confluent Cloud.
-resource "confluent_flink_statement" "my_flink_statement" {
-  compute_pool {
-    id = data.confluent_flink_compute_pool.existing_compute_pool.id
-  }
-
-  principal {
-    id = data.confluent_service_account.existing_service_account.id
-  }
-
-  # This SQL reads data from source_topic, filters it, and ingests the filtered data into sink_topic.
-  statement = <<EOT
-    INSERT INTO sink_topic
-    SELECT key, orderid, orderunits
-    FROM source_topic
-    WHERE orderunits > 5;
-    EOT
-
-  properties = {
-    "sql.current-catalog"  = data.confluent_environment.existing_env.display_name
-    "sql.current-database" = data.confluent_kafka_cluster.existing_cluster.display_name
-  }
-
-  rest_endpoint = "https://flink.${data.confluent_flink_region.my_flink_region.region}.${ data.confluent_flink_region.my_flink_region.cloud}.confluent.cloud/sql/v1beta1/organizations/1111aaaa-11aa-11aa-11aa-111111aaaaaa/environments/${data.confluent_environment.existing_env.id}"
- 
-  credentials {    
-    key    = confluent_api_key.my_flink_api_key.id
-    secret = confluent_api_key.my_flink_api_key.secret
-  }
-  depends_on = [
-    confluent_api_key.my_flink_api_key
-  ]
-}
