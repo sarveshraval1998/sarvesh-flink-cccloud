@@ -114,9 +114,9 @@ resource "confluent_api_key" "my_sr_api_key" {
   }
 
   managed_resource {
-    id          = "lkc-6o2q52"
-    api_version = "srcm/v2"
-    kind        = "Cluster"
+    id          = data.confluent_kafka_cluster.existing_cluster.id
+    api_version = data.confluent_kafka_cluster.existing_cluster.api_version
+    kind        = data.confluent_kafka_cluster.existing_cluster.kind
 
     environment {
       id = data.confluent_environment.existing_env.id
