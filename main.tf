@@ -36,25 +36,6 @@ data "confluent_kafka_cluster" "existing_cluster" {
   }
 }
 
-# Add the Stream Governance Essentials package to the environment.
-data "confluent_schema_registry_region" "my_sr_region" {
-  cloud   = local.cloud
-  region  = local.region
-  package = "ESSENTIALS"
-}
-
-resource "confluent_schema_registry_cluster" "my_sr_cluster" {
-  package = data.confluent_schema_registry_region.my_sr_region.package
-
-  environment {
-    id = data.confluent_environment.existing_env.id
-  }
-
-  region {
-    # See https://docs.confluent.io/cloud/current/stream-governance/packages.html#stream-governance-regions
-    id = data.confluent_schema_registry_region.my_sr_region.id
-  }
-}
 
 # Create a new Service Account. This will used during Kafka API key creation and Flink SQL statement submission.
 data "confluent_service_account" "existing_service_account" {
@@ -133,27 +114,23 @@ resource "confluent_api_key" "my_sr_api_key" {
   }
 
   managed_resource {
-    id          = confluent_schema_registry_cluster.my_sr_cluster.id
-    api_version = confluent_schema_registry_cluster.my_sr_cluster.api_version
-    kind        = confluent_schema_registry_cluster.my_sr_cluster.kind
+    id          = "lkc-6o2q52"
+    api_version = "v2"
+    kind        = "schema-registry"
 
     environment {
       id = data.confluent_environment.existing_env.id
     }
   }
-
-  depends_on = [
-    confluent_schema_registry_cluster.my_sr_cluster
-  ]
 }
 
 # Attach a schema to the sink_topic.
 resource "confluent_schema" "my_schema" {
   schema_registry_cluster {
-    id = confluent_schema_registry_cluster.my_sr_cluster.id
+    id = "lkc-6o2q52"
   }
 
-  rest_endpoint = confluent_schema_registry_cluster.my_sr_cluster.rest_endpoint
+  rest_endpoint = "https://pkc-p11xm.us-east-1.aws.confluent.cloud:443"
   subject_name  = "${confluent_kafka_topic.sink_topic.topic_name}-value"
   format        = "AVRO"
   schema        = file("./schemas/avro/my_schema.avsc")
