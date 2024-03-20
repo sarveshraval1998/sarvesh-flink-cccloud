@@ -148,6 +148,9 @@ resource "confluent_schema" "my_schema" {
 
 data "confluent_flink_compute_pool" "existing_compute_pool" {
   display_name = "Flink-Test"
+  environment {
+    id = data.confluent_environment.existing_env.id
+  }
 }
 
 # Create a Flink-specific API key that will be used to submit statements.
