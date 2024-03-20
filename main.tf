@@ -181,14 +181,6 @@ resource "confluent_api_key" "my_flink_api_key" {
 
 # Deploy a Flink SQL statement to Confluent Cloud.
 resource "confluent_flink_statement" "my_flink_statement" {
-  organization {
-    id = data.confluent_organization.my_org.id
-  }
-
-  environment {
-    id = data.confluent_environment.existing_env.id
-  }
-
   compute_pool {
     id = data.confluent_flink_compute_pool.existing_compute_pool.id
   }
