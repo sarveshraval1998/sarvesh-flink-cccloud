@@ -36,6 +36,26 @@ data "confluent_kafka_cluster" "existing_cluster" {
   }
 }
 
+# Add the Stream Governance Essentials package to the environment.
+data "confluent_schema_registry_region" "my_sr_region" {
+  cloud   = local.cloud
+  region  = local.region
+  package = "ESSENTIALS"
+}
+
+resource "confluent_schema_registry_cluster" "my_sr_cluster" {
+  package = data.confluent_schema_registry_region.my_sr_region.package
+
+  environment {
+    id = data.confluent_environment.existing_env.id
+  }
+
+  region {
+    # See https://docs.confluent.io/cloud/current/stream-governance/packages.html#stream-governance-regions
+    id = data.confluent_schema_registry_region.my_sr_region.id
+  }
+}
+
 # Create a new Service Account. This will used during Kafka API key creation and Flink SQL statement submission.
 data "confluent_service_account" "existing_service_account" {
   display_name = "SA-153094-DF-SSConDep"
