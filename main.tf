@@ -159,13 +159,6 @@ data "confluent_flink_region" "my_flink_region" {
   region = local.region
 }
 
-data "confluent_api_key" "existing_api_key" {
-  display_name = "my_flink_api_key"
-  environment {
-    id = data.confluent_environment.existing_env.id
-  }
-}
-
 # Deploy a Flink SQL statement to Confluent Cloud.
 resource "confluent_flink_statement" "my_flink_statement" {
   compute_pool {
@@ -192,10 +185,7 @@ resource "confluent_flink_statement" "my_flink_statement" {
   rest_endpoint = "https://flink.${data.confluent_flink_region.my_flink_region.region}.${ data.confluent_flink_region.my_flink_region.cloud}.confluent.cloud/sql/v1beta1/organizations/1111aaaa-11aa-11aa-11aa-111111aaaaaa/environments/${data.confluent_environment.existing_env.id}"
  
   credentials {    
-    key    = confluent_api_key.my_flink_api_key.id
-    secret = confluent_api_key.my_flink_api_key.secret
+    key    = "32GGHGWWI3J7XOZY"
+    secret = "7ORdjdmlzd6JqGXR5v8V4PdFdyXQJUjHbHJfRlqS6sTep0EmAd4f2/xpNTLYQlLn"
   }
-  depends_on = [
-    confluent_api_key.my_flink_api_key
-  ]
 }
