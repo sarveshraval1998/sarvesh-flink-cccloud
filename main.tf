@@ -159,23 +159,15 @@ data "confluent_flink_region" "my_flink_region" {
   region = local.region
 }
 
-resource "confluent_api_key" "my_flink_api_key" {
+data "confluent_api_key" "existing_api_key" {
   display_name = "my_flink_api_key"
+}
 
-  owner {
-    id          = data.confluent_service_account.existing_service_account.id
-    api_version = data.confluent_service_account.existing_service_account.api_version
-    kind        = data.confluent_service_account.existing_service_account.kind
-  }
+managed_resource {
+  id = data.confluent_api_key.existing_api_key.id
 
-  managed_resource {
-    id          = "${data.confluent_environment.existing_env.id}.${local.cloud}.${local.region}"
-    api_version = data.confluent_flink_region.my_flink_region.api_version
-    kind        = data.confluent_flink_region.my_flink_region.kind
-
-    environment {
-      id = data.confluent_environment.existing_env.id
-    }
+  environment {
+    id = data.confluent_environment.existing_env.id
   }
 }
 
