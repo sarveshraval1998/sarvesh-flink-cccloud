@@ -55,8 +55,8 @@ resource "confluent_kafka_topic" "source_topic" {
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = "D7HW535CCPSZY36R"
-    secret = "jZARSXEVto08v5pnflOQAdhOdmJfZc70+it40obKhas/PydZV5/oqj1GPui7WiQo"
+    key    = "VYARVBBWCDKU7B7T"
+    secret = "YVHeV3KB4CXbGLq3YTpi2gjnEqoagv7HuJXCVBX5u+cONGCTPbLrFL/KkHT6gDjK"
   }
 }
 
@@ -74,7 +74,7 @@ resource "confluent_connector" "my_connector" {
 
   config_nonsensitive = {
     "connector.class"          = "DatagenSource"
-    "name"                     = "my_connector"
+    "name"                     = "my_newconnector"
     "kafka.auth.mode"          = "SERVICE_ACCOUNT"
     "kafka.service.account.id" = data.confluent_service_account.existing_service_account.id
     "kafka.topic"              = confluent_kafka_topic.source_topic.topic_name
@@ -98,8 +98,8 @@ resource "confluent_kafka_topic" "sink_newtopic" {
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = "D7HW535CCPSZY36R"
-    secret = "jZARSXEVto08v5pnflOQAdhOdmJfZc70+it40obKhas/PydZV5/oqj1GPui7WiQo"
+    key    = "VYARVBBWCDKU7B7T"
+    secret = "YVHeV3KB4CXbGLq3YTpi2gjnEqoagv7HuJXCVBX5u+cONGCTPbLrFL/KkHT6gDjK"
   }
 }
 
@@ -169,7 +169,7 @@ resource "confluent_api_key" "my_flink_api_key" {
   }
 
   managed_resource {
-    id          = data.confluent_flink_region.my_flink_region.id
+    id          = "${data.confluent_environment.existing_env.id}.${local.cloud}.${local.region}"
     api_version = data.confluent_flink_region.my_flink_region.api_version
     kind        = data.confluent_flink_region.my_flink_region.kind
 
