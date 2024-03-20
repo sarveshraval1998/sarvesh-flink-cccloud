@@ -89,7 +89,7 @@ resource "confluent_connector" "my_connector" {
 }
 
 # Create a new Kafka topic. We will eventually ingest data from our source_topic via a Flink SQL statement into this topic.
-resource "confluent_kafka_topic" "sink_topic" {
+resource "confluent_kafka_topic" "sink_newtopic" {
   kafka_cluster {
     id = data.confluent_kafka_cluster.existing_cluster.id
   }
@@ -131,7 +131,7 @@ resource "confluent_schema" "my_newschema" {
   }
 
   rest_endpoint = "https://psrc-yorrp.us-east-2.aws.confluent.cloud"
-  subject_name  = "${confluent_kafka_topic.sink_topic.topic_name}-value"
+  subject_name  = "${confluent_kafka_topic.sink_newtopic.topic_name}-value"
   format        = "AVRO"
   schema        = file("./schemas/avro/my_schema.avsc")
 
@@ -142,7 +142,7 @@ resource "confluent_schema" "my_newschema" {
 
   depends_on = [
     confluent_api_key.my_sr_api_key,
-    confluent_kafka_topic.sink_topic
+    confluent_kafka_topic.sink_newtopic
   ]
 }
 
@@ -191,7 +191,7 @@ resource "confluent_flink_statement" "my_flink_statement" {
 
   # This SQL reads data from source_topic, filters it, and ingests the filtered data into sink_topic.
   statement = <<EOT
-    INSERT INTO sink_topic
+    INSERT INTO sink_newtopic
     SELECT key, orderid, orderunits
     FROM source_topic
     WHERE orderunits > 5;
