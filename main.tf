@@ -127,10 +127,10 @@ resource "confluent_api_key" "my_sr_api_key" {
 # Attach a schema to the sink_topic.
 resource "confluent_schema" "my_schema" {
   schema_registry_cluster {
-    id = data.confluent_kafka_cluster.existing_cluster.id
+    id = "lsrc-0z119"
   }
 
-  rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
+  rest_endpoint = "https://psrc-yorrp.us-east-2.aws.confluent.cloud"
   subject_name  = "${confluent_kafka_topic.sink_topic.topic_name}-value"
   format        = "AVRO"
   schema        = file("./schemas/avro/my_schema.avsc")
