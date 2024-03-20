@@ -185,7 +185,7 @@ resource "confluent_flink_statement" "my_flink_statement" {
   rest_endpoint = "https://flink.${data.confluent_flink_region.my_flink_region.region}.${ data.confluent_flink_region.my_flink_region.cloud}.confluent.cloud/sql/v1beta1/organizations/1111aaaa-11aa-11aa-11aa-111111aaaaaa/environments/${data.confluent_environment.existing_env.id}"
  
   credentials {    
-    key    = "32GGHGWWI3J7XOZY"
-    secret = "7ORdjdmlzd6JqGXR5v8V4PdFdyXQJUjHbHJfRlqS6sTep0EmAd4f2/xpNTLYQlLn"
+    key    = "3IJZ7PNUOJD7HMWR"
+    secret = "UkXTvS0uZjb9ZJUTw9XWvJgr4N56IWJlO/HyV18P1kpzzkA9ga8S6VEt+pNyFNHh"
   }
 }
