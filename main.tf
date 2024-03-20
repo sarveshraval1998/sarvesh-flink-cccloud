@@ -169,7 +169,7 @@ resource "confluent_api_key" "my_flink_api_key" {
   }
 
   managed_resource {
-    id          = data.confluent_flink_region.my_flink_region.id
+    id          = "${data.confluent_environment.existing_env.id}.${local.cloud}.${local.region}"
     api_version = data.confluent_flink_region.my_flink_region.api_version
     kind        = data.confluent_flink_region.my_flink_region.kind
 
