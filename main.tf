@@ -59,16 +59,30 @@ resource "confluent_kafka_topic" "source_topic" {
   }
 }
 
-data "confluent_connector" "existing_connector" {
-  // Specify filters to uniquely identify the existing connector
-  // For example, you can filter by connector name or other properties
-  name = "DatagenSourceConnector_5"
-
+# Create a Datagen connector and ingest mock data into the source_topic created above.
+resource "confluent_connector" "my_connector" {
   environment {
-    id = data.confluent_environment.existing_env.id
+    id = confluent_environment.my_env.id
   }
 
   kafka_cluster {
-    id = data.confluent_kafka_cluster.existing_cluster.id
+    id = confluent_kafka_cluster.my_kafka_cluster.id
   }
+
+  config_sensitive = {}
+
+  config_nonsensitive = {
+    "connector.class"          = "DatagenSource"
+    "name"                     = "my_connector"
+    "kafka.auth.mode"          = "SERVICE_ACCOUNT"
+    "kafka.service.account.id" = confluent_service_account.my_service_account.id
+    "kafka.topic"              = confluent_kafka_topic.source_topic.topic_name
+    "output.data.format"       = "AVRO"
+    "quickstart"               = "ORDERS"
+    "tasks.max"                = "1"
+  }
+
+  depends_on = [
+    confluent_kafka_topic.source_topic
+  ]
 }
