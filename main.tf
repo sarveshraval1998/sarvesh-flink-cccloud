@@ -90,11 +90,11 @@ resource "confluent_connector" "my_connector" {
 # Create a new Kafka topic. We will eventually ingest data from our source_topic via a Flink SQL statement into this topic.
 resource "confluent_kafka_topic" "sink_topic" {
   kafka_cluster {
-    id = confluent_kafka_cluster.my_kafka_cluster.id
+    id = data.confluent_kafka_cluster.existing_kafka_cluster.id
   }
 
   topic_name    = "sink_topic"
-  rest_endpoint = confluent_kafka_cluster.my_kafka_cluster.rest_endpoint
+  rest_endpoint = data.confluent_kafka_cluster.existing_kafka_cluster.rest_endpoint
 
   credentials {
     key    = "D7HW535CCPSZY36R"
