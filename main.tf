@@ -115,8 +115,8 @@ resource "confluent_api_key" "my_sr_api_key" {
 
   managed_resource {
     id          = "lkc-6o2q52"
-    api_version = "v2"
-    kind        = "schema-registry"
+    api_version = "srcm/v2"
+    kind        = "Cluster"
 
     environment {
       id = data.confluent_environment.existing_env.id
