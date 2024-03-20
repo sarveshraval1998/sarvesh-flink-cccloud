@@ -125,7 +125,7 @@ resource "confluent_api_key" "my_sr_api_key" {
 }
 
 # Attach a schema to the sink_topic.
-resource "confluent_schema" "my_schema" {
+resource "confluent_schema" "my_newschema" {
   schema_registry_cluster {
     id = "lsrc-0z119"
   }
