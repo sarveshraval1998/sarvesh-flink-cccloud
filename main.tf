@@ -55,8 +55,8 @@ resource "confluent_kafka_topic" "source_topic" {
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = "D7HW535CCPSZY36R"
-    secret = "jZARSXEVto08v5pnflOQAdhOdmJfZc70+it40obKhas/PydZV5/oqj1GPui7WiQo"
+    key    = "VYARVBBWCDKU7B7T"
+    secret = "YVHeV3KB4CXbGLq3YTpi2gjnEqoagv7HuJXCVBX5u+cONGCTPbLrFL/KkHT6gDjK"
   }
 }
 
@@ -98,8 +98,8 @@ resource "confluent_kafka_topic" "sink_topic" {
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = "D7HW535CCPSZY36R"
-    secret = "jZARSXEVto08v5pnflOQAdhOdmJfZc70+it40obKhas/PydZV5/oqj1GPui7WiQo"
+    key    = "VYARVBBWCDKU7B7T"
+    secret = "YVHeV3KB4CXbGLq3YTpi2gjnEqoagv7HuJXCVBX5u+cONGCTPbLrFL/KkHT6gDjK"
   }
 }
 
@@ -159,6 +159,26 @@ data "confluent_flink_region" "my_flink_region" {
   region = local.region
 }
 
+resource "confluent_api_key" "my_flink_api_key" {
+  display_name = "my_flink_api_key"
+
+  owner {
+    id          = data.confluent_service_account.existing_service_account.id
+    api_version = data.confluent_service_account.existing_service_account.api_version
+    kind        = data.confluent_service_account.existing_service_account.kind
+  }
+
+  managed_resource {
+    id          = data.confluent_flink_region.my_flink_region.id
+    api_version = data.confluent_flink_region.my_flink_region.api_version
+    kind        = data.confluent_flink_region.my_flink_region.kind
+
+    environment {
+      id = data.confluent_environment.existing_env.id
+    }
+  }
+}
+
 # Deploy a Flink SQL statement to Confluent Cloud.
 resource "confluent_flink_statement" "my_flink_statement" {
   compute_pool {
@@ -184,8 +204,11 @@ resource "confluent_flink_statement" "my_flink_statement" {
 
   rest_endpoint = "https://flink.${data.confluent_flink_region.my_flink_region.region}.${ data.confluent_flink_region.my_flink_region.cloud}.confluent.cloud/sql/v1beta1/organizations/1111aaaa-11aa-11aa-11aa-111111aaaaaa/environments/${data.confluent_environment.existing_env.id}"
  
-  credentials {
-    key    = "ZO7ZE6JNKVAQWBGL"
-    secret = "xBw2037s3XP8bbmJv5bTrjzmty/4OtEts0/WiSceLXCnyrxSknX3sfku7W4cEiMq"
+  credentials {    
+    key    = confluent_api_key.my_flink_api_key.id
+    secret = confluent_api_key.my_flink_api_key.secret
   }
+  depends_on = [
+    confluent_api_key.my_flink_api_key
+  ]
 }
