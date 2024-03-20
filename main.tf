@@ -40,7 +40,6 @@ data "confluent_kafka_cluster" "existing_cluster" {
 # Create a new Service Account. This will used during Kafka API key creation and Flink SQL statement submission.
 data "confluent_service_account" "existing_service_account" {
   display_name = "Dev-Service-Account"
-  # You may need to provide additional filters to uniquely identify the existing service account
 }
 
 data "confluent_organization" "my_org" {}
@@ -55,8 +54,8 @@ resource "confluent_kafka_topic" "source_topic" {
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = "VYARVBBWCDKU7B7T"
-    secret = "YVHeV3KB4CXbGLq3YTpi2gjnEqoagv7HuJXCVBX5u+cONGCTPbLrFL/KkHT6gDjK"
+    key    = "D7HW535CCPSZY36R"
+    secret = "jZARSXEVto08v5pnflOQAdhOdmJfZc70+it40obKhas/PydZV5/oqj1GPui7WiQo"
   }
 }
 
@@ -98,8 +97,8 @@ resource "confluent_kafka_topic" "sink_topic" {
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = "VYARVBBWCDKU7B7T"
-    secret = "YVHeV3KB4CXbGLq3YTpi2gjnEqoagv7HuJXCVBX5u+cONGCTPbLrFL/KkHT6gDjK"
+    key    = "D7HW535CCPSZY36R"
+    secret = "jZARSXEVto08v5pnflOQAdhOdmJfZc70+it40obKhas/PydZV5/oqj1GPui7WiQo"
   }
 }
 
