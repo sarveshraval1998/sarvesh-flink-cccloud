@@ -86,3 +86,65 @@ resource "confluent_connector" "my_connector" {
     confluent_kafka_topic.source_topic
   ]
 }
+
+# Create a new Kafka topic. We will eventually ingest data from our source_topic via a Flink SQL statement into this topic.
+resource "confluent_kafka_topic" "sink_topic" {
+  kafka_cluster {
+    id = confluent_kafka_cluster.my_kafka_cluster.id
+  }
+
+  topic_name    = "sink_topic"
+  rest_endpoint = confluent_kafka_cluster.my_kafka_cluster.rest_endpoint
+
+  credentials {
+    key    = "D7HW535CCPSZY36R"
+    secret = "jZARSXEVto08v5pnflOQAdhOdmJfZc70+it40obKhas/PydZV5/oqj1GPui7WiQo"
+  }
+}
+
+# Create a Schema Registry API key to interact with the Schema Registry cluster we created above.
+resource "confluent_api_key" "my_sr_api_key" {
+  display_name = "my_sr_api_key"
+
+  owner {
+    id          = data.confluent_service_account.existing_service_account.id
+    api_version = data.confluent_service_account.existing_service_account.api_version
+    kind        = data.confluent_service_account.existing_service_account.kind
+  }
+
+  managed_resource {
+    id          = confluent_schema_registry_cluster.my_sr_cluster.id
+    api_version = confluent_schema_registry_cluster.my_sr_cluster.api_version
+    kind        = confluent_schema_registry_cluster.my_sr_cluster.kind
+
+    environment {
+      id = data.confluent_environment.existing_env.id
+    }
+  }
+
+  depends_on = [
+    confluent_schema_registry_cluster.my_sr_cluster
+  ]
+}
+
+# Attach a schema to the sink_topic.
+resource "confluent_schema" "my_schema" {
+  schema_registry_cluster {
+    id = confluent_schema_registry_cluster.my_sr_cluster.id
+  }
+
+  rest_endpoint = confluent_schema_registry_cluster.my_sr_cluster.rest_endpoint
+  subject_name  = "${confluent_kafka_topic.sink_topic.topic_name}-value"
+  format        = "AVRO"
+  schema        = file("./schemas/avro/my_schema.avsc")
+
+  credentials {
+    key    = confluent_api_key.my_sr_api_key.id
+    secret = confluent_api_key.my_sr_api_key.secret
+  }
+
+  depends_on = [
+    confluent_api_key.my_sr_api_key,
+    confluent_kafka_topic.sink_topic
+  ]
+}
