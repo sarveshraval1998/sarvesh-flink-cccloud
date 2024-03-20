@@ -62,11 +62,11 @@ resource "confluent_kafka_topic" "source_topic" {
 # Create a Datagen connector and ingest mock data into the source_topic created above.
 resource "confluent_connector" "my_connector" {
   environment {
-    id = confluent_environment.my_env.id
+    id = confluent_environment.existing_env.id
   }
 
   kafka_cluster {
-    id = confluent_kafka_cluster.my_kafka_cluster.id
+    id = confluent_kafka_cluster.existing_cluster.id
   }
 
   config_sensitive = {}
@@ -75,7 +75,7 @@ resource "confluent_connector" "my_connector" {
     "connector.class"          = "DatagenSource"
     "name"                     = "my_connector"
     "kafka.auth.mode"          = "SERVICE_ACCOUNT"
-    "kafka.service.account.id" = confluent_service_account.my_service_account.id
+    "kafka.service.account.id" = confluent_service_account.existing_service_account.id
     "kafka.topic"              = confluent_kafka_topic.source_topic.topic_name
     "output.data.format"       = "AVRO"
     "quickstart"               = "ORDERS"
