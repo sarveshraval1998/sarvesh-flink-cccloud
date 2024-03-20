@@ -123,28 +123,6 @@ resource "confluent_api_key" "my_sr_api_key" {
   }
 }
 
-# Attach a schema to the sink_topic.
-resource "confluent_schema" "my_schema" {
-  schema_registry_cluster {
-    id = "lsrc-0z119"
-  }
-
-  rest_endpoint = "https://psrc-yorrp.us-east-2.aws.confluent.cloud"
-  subject_name  = "${confluent_kafka_topic.sink_topic.topic_name}-value"
-  format        = "AVRO"
-  schema        = file("./schemas/avro/my_schema.avsc")
-
-  credentials {
-    key    = confluent_api_key.my_sr_api_key.id
-    secret = confluent_api_key.my_sr_api_key.secret
-  }
-
-  depends_on = [
-    confluent_api_key.my_sr_api_key,
-    confluent_kafka_topic.sink_topic
-  ]
-}
-
 data "confluent_flink_compute_pool" "existing_compute_pool" {
   display_name = "Flink-Test"
   environment {
