@@ -161,11 +161,6 @@ data "confluent_flink_region" "my_flink_region" {
 
 data "confluent_api_key" "existing_api_key" {
   display_name = "my_flink_api_key"
-}
-
-managed_resource {
-  id = data.confluent_api_key.existing_api_key.id
-
   environment {
     id = data.confluent_environment.existing_env.id
   }
