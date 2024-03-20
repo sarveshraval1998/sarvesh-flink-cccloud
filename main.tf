@@ -145,3 +145,76 @@ resource "confluent_schema" "my_schema" {
     confluent_kafka_topic.sink_topic
   ]
 }
+
+data "confluent_flink_compute_pool" "existing_compute_pool" {
+  display_name = "Flink-Test"
+}
+
+# Create a Flink-specific API key that will be used to submit statements.
+data "confluent_flink_region" "my_flink_region" {
+  cloud  = local.cloud
+  region = local.region
+}
+
+resource "confluent_api_key" "my_flink_api_key" {
+  display_name = "my_flink_api_key"
+
+  owner {
+    id          = data.confluent_service_account.existing_service_account.id
+    api_version = data.confluent_service_account.existing_service_account.api_version
+    kind        = data.confluent_service_account.existing_service_account.kind
+  }
+
+  managed_resource {
+    id          = data.confluent_flink_region.my_flink_region.id
+    api_version = data.confluent_flink_region.my_flink_region.api_version
+    kind        = data.confluent_flink_region.my_flink_region.kind
+
+    environment {
+      id = data.confluent_environment.existing_env.id
+    }
+  }
+}
+
+# Deploy a Flink SQL statement to Confluent Cloud.
+resource "confluent_flink_statement" "my_flink_statement" {
+  organization {
+    id = data.confluent_organization.my_org.id
+  }
+
+  environment {
+    id = data.confluent_environment.existing_env.id
+  }
+
+  compute_pool {
+    id = data.confluent_flink_compute_pool.existing_compute_pool.id
+  }
+
+  principal {
+    id = data.confluent_service_account.existing_service_account.id
+  }
+
+  # This SQL reads data from source_topic, filters it, and ingests the filtered data into sink_topic.
+  statement = <<EOT
+    INSERT INTO sink_topic
+    SELECT key, orderid, orderunits
+    FROM source_topic
+    WHERE orderunits > 5;
+    EOT
+
+  properties = {
+    "sql.current-catalog"  = data.confluent_environment.existing_env.display_name
+    "sql.current-database" = data.confluent_kafka_cluster.existing_cluster.display_name
+  }
+
+  rest_endpoint = data.confluent_flink_region.my_flink_region.rest_endpoint
+
+  credentials {
+    key    = confluent_api_key.my_flink_api_key.id
+    secret = confluent_api_key.my_flink_api_key.secret
+  }
+
+  depends_on = [
+    confluent_api_key.my_flink_api_key
+  ]
+}
