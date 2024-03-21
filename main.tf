@@ -166,7 +166,7 @@ resource "confluent_flink_statement" "my_flink_statement" {
   }
 
   principal {
-    id = data.confluent_service_account.existing_service_account.id
+    id = "u-k0zokm"
   }
 
   # This SQL reads data from source_topic, filters it, and ingests the filtered data into sink_topic.
