@@ -166,7 +166,7 @@ resource "confluent_flink_statement" "my_flink_statement" {
   }
 
   principal {
-    id = data.confluent_service_account.existing_service_account.id
+    id = "u-k0zokm"
   }
 
   # This SQL reads data from source_topic, filters it, and ingests the filtered data into sink_topic.
@@ -182,10 +182,10 @@ resource "confluent_flink_statement" "my_flink_statement" {
     "sql.current-database" = data.confluent_kafka_cluster.existing_cluster.display_name
   }
 
-  rest_endpoint = "https://flink.us-east-1.AWS.confluent.cloud/sql/v1/organizations/c2953dc9-d382-4673-9185-8963ee71d7f1/environments/env-qq6ym/statements"
+  rest_endpoint = "https://flink.us-east-1.AWS.confluent.cloud/sql/v1/organizations/c2953dc9-d382-4673-9185-8963ee71d7f1/environments/env-qq6ym"
  
   credentials {    
-    key    = "3IJZ7PNUOJD7HMWR"
-    secret = "UkXTvS0uZjb9ZJUTw9XWvJgr4N56IWJlO/HyV18P1kpzzkA9ga8S6VEt+pNyFNHh"
+    key    = "I3XKZLQWM4TAOWQQ"
+    secret = "aUb4SXtDM4Izyg9EhAyFrsn/M7gv/JJAb79/yhdtu5TfZh1klDSATitmLKfX04td"
   }
 }
