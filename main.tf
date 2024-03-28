@@ -179,10 +179,10 @@ resource "confluent_flink_statement" "my_flink_statement" {
     "sql.current-database" = data.confluent_kafka_cluster.existing_cluster.display_name
   }
 
-  rest_endpoint = "https://flink.us-east-2.azure.confluent.cloud/sql/v1/organizations/c2953dc9-d382-4673-9185-8963ee71d7f1/environments/env-qq6ym"
+  rest_endpoint = "https://flink.eastus.azure.confluent.cloud/sql/v1/organizations/c2953dc9-d382-4673-9185-8963ee71d7f1/environments/env-qq6ym"
  
   credentials {    
-    key    = "3IJZ7PNUOJD7HMWR"
-    secret = "UkXTvS0uZjb9ZJUTw9XWvJgr4N56IWJlO/HyV18P1kpzzkA9ga8S6VEt+pNyFNHh"
+    key    = "Y7QZC5KMAXQMC4NO"
+    secret = "8YE+qCamXYOHYyKUunFVJfPjLSdQHh9RiRRbgfqs1rEsxvqoAl20AKfZR/9Ndeg8"
   }
 }
