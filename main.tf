@@ -182,7 +182,7 @@ resource "confluent_flink_statement" "my_flink_statement" {
   rest_endpoint = "https://flink.us-east-1.aws.confluent.cloud/sql/v1/organizations/c2953dc9-d382-4673-9185-8963ee71d7f1/environments/env-qq6ym"
  
   credentials {    
-    key    = "OBOJEFVOWLMHCVCX"
-    secret = "qxtRKcK3p3qDps12KtLWK90eVoVw1sDufcEj8r36xYE9IWjlXjAnOFlEuvA6wded"
+    key    = "NJGCAKQ7H4CRA7SU"
+    secret = "zmPv86I8nAizOncgIhB7Fwvha64T2v+fQfCAglrpFHjIHlVTxfvMifVSfEU+dQnX"
   }
 }
