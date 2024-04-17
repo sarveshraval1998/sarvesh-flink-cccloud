@@ -26,7 +26,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -refresh=true
+        run: terraform plan -refresh=false
         env:
           TF_VAR_confluent_cloud_api_key: ${{ secrets.CONFLUENT_CLOUD_API_KEY }}
           TF_VAR_confluent_cloud_api_secret: ${{ secrets.CONFLUENT_CLOUD_API_SECRET }}
