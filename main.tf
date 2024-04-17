@@ -55,8 +55,8 @@ resource "confluent_kafka_topic" "source_topic" {
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = "XZCFIK25QWALKWAA"
-    secret = "DLpoRDak6PRGkfGyhr9hm+MbV3uQtyqBUa7QjVQCfaS9Jx95lzaEl+7dVbe/Cz6u"
+    key    = "CZ6SC45AWWFPDWJV"
+    secret = "oqscpB6gFirL+twJvpyqUh128ZMkOim2ViCux2B5Ej7vSryWtQ/PY450M8haUzyV"
   }
 }
 
@@ -98,8 +98,8 @@ resource "confluent_kafka_topic" "sink_newtopic" {
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = "XZCFIK25QWALKWAA"
-    secret = "DLpoRDak6PRGkfGyhr9hm+MbV3uQtyqBUa7QjVQCfaS9Jx95lzaEl+7dVbe/Cz6u"
+    key    = "CZ6SC45AWWFPDWJV"
+    secret = "oqscpB6gFirL+twJvpyqUh128ZMkOim2ViCux2B5Ej7vSryWtQ/PY450M8haUzyV"
   }
 }
 
