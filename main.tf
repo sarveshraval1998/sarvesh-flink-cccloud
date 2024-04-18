@@ -136,8 +136,8 @@ resource "confluent_schema" "my_newschema" {
   schema        = file("./schemas/avro/my_schema.avsc")
 
   credentials {
-    key    = var.confluent_api_key.my_sr_api_key.id
-    secret = var.confluent_api_key.my_sr_api_key.secret
+    key    = confluent_api_key.my_sr_api_key.id
+    secret = confluent_api_key.my_sr_api_key.secret
   }
 
   depends_on = [
