@@ -18,7 +18,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -refresh=false
+        run: terraform init
 
       - name: Terraform Validate
         id: validate
