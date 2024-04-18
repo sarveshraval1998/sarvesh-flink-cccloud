@@ -160,7 +160,7 @@ data "confluent_flink_region" "my_flink_region" {
 }
 
 # Deploy a Flink SQL statement to Confluent Cloud.
-resource "confluent_flink_statement" "my_flink_statement" {
+resource "confluent_flink_statement" var.confluent_flink_statement {
   compute_pool {
     id = data.confluent_flink_compute_pool.existing_compute_pool.id
   }
