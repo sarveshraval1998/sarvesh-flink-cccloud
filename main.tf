@@ -25,21 +25,21 @@ provider "confluent" {
 }
 
 data "confluent_environment" "existing_env" {
-  display_name = "Dev"  
+  display_name = var.confluent_environment
 }
 
 data "confluent_kafka_cluster" "existing_cluster" {
-  display_name = "DF_AWS_DEV" 
+  display_name = var.confluent_cluster 
 
   environment {
-    id = data.confluent_environment.existing_env.id
+    id = data.confluent_environment.existing_envid
   }
 }
 
 
 # Create a new Service Account. This will used during Kafka API key creation and Flink SQL statement submission.
 data "confluent_service_account" "existing_service_account" {
-  display_name = "Dev-Service-Account"
+  display_name = var.confluent_service_account
   # You may need to provide additional filters to uniquely identify the existing service account
 }
 
@@ -51,12 +51,12 @@ resource "confluent_kafka_topic" "source_topic" {
     id = data.confluent_kafka_cluster.existing_cluster.id
   }
 
-  topic_name    = "source_newtopic"
+  topic_name    = var.confluent_sourcetopic
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = "WKG3VGTORVHQKMBF"
-    secret = "jYRbvtzloMvwz5EGMiHNS7kvGHMZMNtV/TKh3MVPWetBVWnMRNdu3vf3UvP725fT"
+    key    = var.confluent_cluster_keyid
+    secret = var.confluent_cluster_keysecret
   }
 }
 
@@ -74,7 +74,7 @@ resource "confluent_connector" "my_connector" {
 
   config_nonsensitive = {
     "connector.class"          = "DatagenSource"
-    "name"                     = "my_newconnector"
+    "name"                     = var.confluent_connector
     "kafka.auth.mode"          = "SERVICE_ACCOUNT"
     "kafka.service.account.id" = data.confluent_service_account.existing_service_account.id
     "kafka.topic"              = confluent_kafka_topic.source_topic.topic_name
@@ -94,12 +94,12 @@ resource "confluent_kafka_topic" "sink_newtopic" {
     id = data.confluent_kafka_cluster.existing_cluster.id
   }
 
-  topic_name    = "sink_newtopic"
+  topic_name    = var.confluent_sinktopic
   rest_endpoint = data.confluent_kafka_cluster.existing_cluster.rest_endpoint
 
   credentials {
-    key    = "WKG3VGTORVHQKMBF"
-    secret = "jYRbvtzloMvwz5EGMiHNS7kvGHMZMNtV/TKh3MVPWetBVWnMRNdu3vf3UvP725fT"
+    key    = var.confluent_cluster_keyid
+    secret = var.confluent_cluster_keysecret
   }
 }
 
@@ -114,7 +114,7 @@ resource "confluent_api_key" "my_sr_api_key" {
   }
 
   managed_resource {
-    id          = "lsrc-0z119"
+    id          = confluent_srcluster_id
     api_version = "srcm/v2"
     kind        = "Cluster"
 
@@ -127,7 +127,7 @@ resource "confluent_api_key" "my_sr_api_key" {
 # Attach a schema to the sink_topic.
 resource "confluent_schema" "my_newschema" {
   schema_registry_cluster {
-    id = "lsrc-0z119"
+    id = confluent_srcluster_id
   }
 
   rest_endpoint = "https://psrc-yorrp.us-east-2.aws.confluent.cloud"
@@ -179,10 +179,10 @@ resource "confluent_flink_statement" "my_flink_statement" {
     "sql.current-database" = data.confluent_kafka_cluster.existing_cluster.display_name
   }
 
-  rest_endpoint = "https://flink.us-east-1.aws.confluent.cloud/sql/v1/organizations/c2953dc9-d382-4673-9185-8963ee71d7f1/environments/env-qq6ym"
+  rest_endpoint = var.confluent_flink_endpoint
  
   credentials {    
-    key    = "NJGCAKQ7H4CRA7SU"
-    secret = "zmPv86I8nAizOncgIhB7Fwvha64T2v+fQfCAglrpFHjIHlVTxfvMifVSfEU+dQnX"
+    key    = var.confluent_flink_keyid
+    secret = var.confluent_flink_keysecret
   }
 }
