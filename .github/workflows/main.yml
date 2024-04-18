@@ -30,14 +30,14 @@ jobs:
         env:
           TF_VAR_confluent_cloud_api_key: ${{ secrets.CONFLUENT_CLOUD_API_KEY }}
           TF_VAR_confluent_cloud_api_secret: ${{ secrets.CONFLUENT_CLOUD_API_SECRET }}
-          TF_VAR_confluent_cluster: ${{ variables.CONFLUENT_CLUSTER }}
-          TF_VAR_confluent_environment: ${{ variables.CONFLUENT_ENVIRONMENT }}
-          TF_VAR_confluent_service_account: ${{ variables.CONFLUENT_SERVICE_ACCOUNT }}
-          TF_VAR_confluent_sourcetopic: ${{ variables.CONFLUENT_SOURCETOPIC }}
-          TF_VAR_confluent_sinktopic: ${{ variables.CONFLUENT_SINKTOPIC }}
-          TF_VAR_confluent_connector: ${{ variables.CONFLUENT_CONNECTOR }}
-          TF_VAR_confluent_srcluster_id: ${{ variables.CONFLUENT_SRCLUSTER_ID }}
-          TF_VAR_confluent_flink_endpoint: ${{ variables.CONFLUENT_FLINK_ENDPOINT }}
+          TF_VAR_confluent_cluster: ${{ vars.CONFLUENT_CLUSTER }}
+          TF_VAR_confluent_environment: ${{ vars.CONFLUENT_ENVIRONMENT }}
+          TF_VAR_confluent_service_account: ${{ vars.CONFLUENT_SERVICE_ACCOUNT }}
+          TF_VAR_confluent_sourcetopic: ${{ vars.CONFLUENT_SOURCETOPIC }}
+          TF_VAR_confluent_sinktopic: ${{ vars.CONFLUENT_SINKTOPIC }}
+          TF_VAR_confluent_connector: ${{ vars.CONFLUENT_CONNECTOR }}
+          TF_VAR_confluent_srcluster_id: ${{ vars.CONFLUENT_SRCLUSTER_ID }}
+          TF_VAR_confluent_flink_endpoint: ${{ vars.CONFLUENT_FLINK_ENDPOINT }}
           TF_VAR_confluent_cluster_keyid: ${{ secrets.CONFLUENT_CLUSTER_KEYID }}
           TF_VAR_confluent_cluster_keysecret: ${{ secrets.CONFLUENT_CLUSTER_KEYSECRET }}
           TF_VAR_confluent_flink_keyid: ${{ secrets.CONFLUENT_FLINK_KEYID }}
@@ -49,14 +49,14 @@ jobs:
         env:
           TF_VAR_confluent_cloud_api_key: ${{ secrets.CONFLUENT_CLOUD_API_KEY }}
           TF_VAR_confluent_cloud_api_secret: ${{ secrets.CONFLUENT_CLOUD_API_SECRET }}          
-          TF_VAR_confluent_cluster: ${{ variables.CONFLUENT_CLUSTER }}
-          TF_VAR_confluent_environment: ${{ variables.CONFLUENT_ENVIRONMENT }}
-          TF_VAR_confluent_service_account: ${{ variables.CONFLUENT_SERVICE_ACCOUNT }}
-          TF_VAR_confluent_sourcetopic: ${{ variables.CONFLUENT_SOURCETOPIC }}
-          TF_VAR_confluent_sinktopic: ${{ variables.CONFLUENT_SINKTOPIC }}
-          TF_VAR_confluent_connector: ${{ variables.CONFLUENT_CONNECTOR }}
-          TF_VAR_confluent_srcluster_id: ${{ variables.CONFLUENT_SRCLUSTER_ID }}
-          TF_VAR_confluent_flink_endpoint: ${{ variables.CONFLUENT_FLINK_ENDPOINT }}
+          TF_VAR_confluent_cluster: ${{ vars.CONFLUENT_CLUSTER }}
+          TF_VAR_confluent_environment: ${{ vars.CONFLUENT_ENVIRONMENT }}
+          TF_VAR_confluent_service_account: ${{ vars.CONFLUENT_SERVICE_ACCOUNT }}
+          TF_VAR_confluent_sourcetopic: ${{ vars.CONFLUENT_SOURCETOPIC }}
+          TF_VAR_confluent_sinktopic: ${{ vars.CONFLUENT_SINKTOPIC }}
+          TF_VAR_confluent_connector: ${{ vars.CONFLUENT_CONNECTOR }}
+          TF_VAR_confluent_srcluster_id: ${{ vars.CONFLUENT_SRCLUSTER_ID }}
+          TF_VAR_confluent_flink_endpoint: ${{ vars.CONFLUENT_FLINK_ENDPOINT }}
           TF_VAR_confluent_cluster_keyid: ${{ secrets.CONFLUENT_CLUSTER_KEYID }}
           TF_VAR_confluent_cluster_keysecret: ${{ secrets.CONFLUENT_CLUSTER_KEYSECRET }}
           TF_VAR_confluent_flink_keyid: ${{ secrets.CONFLUENT_FLINK_KEYID }}
