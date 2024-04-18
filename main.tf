@@ -147,7 +147,7 @@ resource "confluent_schema" "my_newschema" {
 }
 
 data "confluent_flink_compute_pool" "existing_compute_pool" {
-  display_name = "Flink-Test"
+  display_name = var.confluent_compute_pool
   environment {
     id = data.confluent_environment.existing_env.id
   }
@@ -160,7 +160,7 @@ data "confluent_flink_region" "my_flink_region" {
 }
 
 # Deploy a Flink SQL statement to Confluent Cloud.
-resource "confluent_flink_statement" var.confluent_flink_statement {
+resource "confluent_flink_statement" "my_new_flinkstatement" {
   compute_pool {
     id = data.confluent_flink_compute_pool.existing_compute_pool.id
   }
