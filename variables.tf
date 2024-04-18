@@ -55,25 +55,31 @@ variable "confluent_flink_endpoint" {
 }
 
 variable "confluent_cluster_keyid" {
-  description = "Confluent cluster key id"
+  description = "Confluent Cluster Key Id"
   type        = string
   sensitive   = true
 }
 
 variable "confluent_cluster_keysecret" {
-  description = "Confluent cluster key secret"
+  description = "Confluent Cluster Key Secret"
   type        = string
   sensitive   = true
 }
 
 variable "confluent_flink_keyid" {
-  description = "Confluent flink key id"
+  description = "Confluent Flink Key Id"
   type        = string
   sensitive   = true
 }
 
 variable "confluent_flink_keysecret" {
-  description = "Confluent flink key secret"
+  description = "Confluent Flink Key Secret"
+  type        = string
+  sensitive   = true
+}
+
+variable "confluent_flink_statement" {
+  description = "Confluent Flink Statement Name"
   type        = string
   sensitive   = true
 }
