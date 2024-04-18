@@ -78,8 +78,8 @@ variable "confluent_flink_keysecret" {
   sensitive   = true
 }
 
-variable "confluent_flink_statement" {
-  description = "Confluent Flink Statement Name"
+variable "confluent_compute_pool" {
+  description = "Confluent Flink Compute Pool"
   type        = string
   sensitive   = true
 }
