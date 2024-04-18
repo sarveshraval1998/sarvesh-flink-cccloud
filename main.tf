@@ -25,14 +25,14 @@ provider "confluent" {
 }
 
 data "confluent_environment" "existing_env" {
-  display_name = "Dev"
+  display_name = var.confluent_environment
 }
 
 data "confluent_kafka_cluster" "existing_cluster" {
-  display_name = "DF_AWS_DEV" 
+  display_name = var.confluent_cluster 
 
   environment {
-    id = data.confluent_environment.existing_envid
+    id = data.confluent_environment.existing_env.id
   }
 }
 
@@ -114,7 +114,7 @@ resource "confluent_api_key" "my_sr_api_key" {
   }
 
   managed_resource {
-    id          = confluent_srcluster_id
+    id          = var.confluent_srcluster_id
     api_version = "srcm/v2"
     kind        = "Cluster"
 
@@ -127,7 +127,7 @@ resource "confluent_api_key" "my_sr_api_key" {
 # Attach a schema to the sink_topic.
 resource "confluent_schema" "my_newschema" {
   schema_registry_cluster {
-    id = confluent_srcluster_id
+    id = var.confluent_srcluster_id
   }
 
   rest_endpoint = "https://psrc-yorrp.us-east-2.aws.confluent.cloud"
@@ -136,8 +136,8 @@ resource "confluent_schema" "my_newschema" {
   schema        = file("./schemas/avro/my_schema.avsc")
 
   credentials {
-    key    = confluent_api_key.my_sr_api_key.id
-    secret = confluent_api_key.my_sr_api_key.secret
+    key    = var.confluent_api_key.my_sr_api_key.id
+    secret = var.confluent_api_key.my_sr_api_key.secret
   }
 
   depends_on = [
