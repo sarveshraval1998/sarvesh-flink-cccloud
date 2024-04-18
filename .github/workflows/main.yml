@@ -42,7 +42,7 @@ jobs:
           TF_VAR_confluent_cluster_keysecret: ${{ secrets.CONFLUENT_CLUSTER_KEYSECRET }}
           TF_VAR_confluent_flink_keyid: ${{ secrets.CONFLUENT_FLINK_KEYID }}
           TF_VAR_confluent_flink_keysecret: ${{ secrets.CONFLUENT_FLINK_KEYSECRET }}
-          TF_VAR_confluent_flink_statement: ${{ secrets.CONFLUENT_FLINK_STATEMENT }}
+          TF_VAR_confluent_compute_pool: ${{ secrets.CONFLUENT_COMPUTE_POOL }}
 
       - name: Terraform Apply
         id: apply
@@ -62,4 +62,4 @@ jobs:
           TF_VAR_confluent_cluster_keysecret: ${{ secrets.CONFLUENT_CLUSTER_KEYSECRET }}
           TF_VAR_confluent_flink_keyid: ${{ secrets.CONFLUENT_FLINK_KEYID }}
           TF_VAR_confluent_flink_keysecret: ${{ secrets.CONFLUENT_FLINK_KEYSECRET }}
-          TF_VAR_confluent_flink_statement: ${{ secrets.CONFLUENT_FLINK_STATEMENT }}
+          TF_VAR_confluent_compute_pool: ${{ secrets.CONFLUENT_COMPUTE_POOL }}
