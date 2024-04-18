@@ -25,11 +25,11 @@ provider "confluent" {
 }
 
 data "confluent_environment" "existing_env" {
-  display_name = var.confluent_environment
+  display_name = "Dev"
 }
 
 data "confluent_kafka_cluster" "existing_cluster" {
-  display_name = var.confluent_cluster 
+  display_name = "DF_AWS_DEV" 
 
   environment {
     id = data.confluent_environment.existing_envid
